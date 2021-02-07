@@ -64,10 +64,15 @@ bool Compare(const RouteModel::Node node1,const RouteModel::Node node2) {
     return node1_greater_node2;
 }
 
+void SortNodes(std::vector<RouteModel::Node*> *n){
+    std::sort(n->begin(), n->end(), Compare);
+
+}
+
 RouteModel::Node *RoutePlanner::NextNode() {
-
-    std::sort(open_list->begin(), open_list->end(), Compare);
-
+    //TODO: Check - Passing reference to function expecting pointer?
+    //OK, because pointer var contains address and &var gives an address?
+    SortNodes(&open_list);
     RouteModel::Node *next_node = open_list.back();
     open_list.pop_back();
 
