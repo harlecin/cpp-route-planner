@@ -15,6 +15,9 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
     start_node = &m_Model.FindClosestNode(start_x, start_y);
     end_node = &m_Model.FindClosestNode(end_x, end_y);
 
+    //Question: How can I see if I assign to a class attribute vs. a new variable?
+    //Only because it is not declared here so it exists already?
+
 }
 
 
@@ -35,6 +38,16 @@ float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 // - For each node in current_node.neighbors, add the neighbor to open_list and set the node's visited attribute to true.
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
+
+    current_node->FindNeighbors();
+
+    for(auto neighbor: current_node->neighbors) {
+        neighbor->parent = current_node;
+        neighbor->h_value=RoutePlanner::CalculateHValue(neighbor);
+        neighbor->g_value=neighbor->distance(*start_node);
+        neighbor->visited=true;
+        open_list.push_back(neighbor);
+    }
 
 }
 
