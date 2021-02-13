@@ -42,11 +42,13 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
     current_node->FindNeighbors();
 
     for(auto neighbor: current_node->neighbors) {
-        neighbor->parent = current_node;
-        neighbor->h_value=RoutePlanner::CalculateHValue(neighbor);
-        neighbor->g_value=neighbor->distance(*start_node);
-        neighbor->visited=true;
-        open_list.push_back(neighbor);
+        if(neighbor->visited != true) {
+            neighbor->parent = current_node;
+            neighbor->h_value=RoutePlanner::CalculateHValue(neighbor);
+            neighbor->g_value=neighbor->distance(*start_node);
+            neighbor->visited=true;
+            open_list.push_back(neighbor);
+        }
     }
 
 }
@@ -59,19 +61,20 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Remove that node from the open_list.
 // - Return the pointer.
 
-bool CompareNodes(const RouteModel::Node node1,const RouteModel::Node node2) {
-    bool node1_greater_node2  = (node1.g_value + node1.h_value) > (node2.g_value + node2.h_value);
+bool CompareNodes(const RouteModel::Node *node1,const RouteModel::Node *node2) {
+    bool node1_greater_node2  = (node1->g_value + node1->h_value) > (node2->g_value + node2->h_value);
     return node1_greater_node2;
 }
 
 void SortNodes(std::vector<RouteModel::Node*> *n){
+
     std::sort(n->begin(), n->end(), CompareNodes);
 
 }
 
 RouteModel::Node *RoutePlanner::NextNode() {
     //TODO: Check - Passing reference to function expecting pointer?
-    //OK, because pointer var contains address and &var gives an address?
+    //OK, because pointer var contains address and &var gives an address? -> check a* from intro!
     SortNodes(&open_list);
     RouteModel::Node *next_node = open_list.back();
     open_list.pop_back();
