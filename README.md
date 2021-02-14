@@ -1,10 +1,12 @@
 # Route Planning Project - Udacity C++ Nanodegree
 
-This repo contains the finished code for the route planning project.
+This repo contains the finished code for the route planning project from the Udacity C++ Nanodegree program.
 
-Here are the instructions to get it up and running:
+It implements the a* search algorithm to find the shortest path between two points using open street map data as shown in the picture below:
 
 <img src="map.png" width="600" height="450" />
+
+Here are the instructions to get the project up and running:
 
 ## Cloning
 
